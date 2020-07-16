@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+  <script>
+  function loadReports(){
+	  //var request = new XMLHttpRequest();
+	  //request.open("POST", "http://localhost:8080/generateReport", true);  // replace "/demo" with your service (ex. "http://localhost:8000/store")
+	  //request.setRequestHeader("Content-Type", "application/json");
+	  //console.log(req.body);
+	  //console.log("json stringify", JSON.stringify(request));
+               // console.log("response data", request.data)
+		$.ajax({
+            type: 'POST',
+            // data: JSON.stringify(data),
+                contentType: 'application/json',
+                        url: 'http://localhost:8080/generateReport',            
+                        success: function(data) {
+                            console.log('success');
+							console.log(data);
+                            var dataLen = data.length;
+							$("#patientDetails").find("tr:gt(0)").remove();  
+							var str = '';  
+							for (var i = 0; i < dataLen; ++i) {
+								var row = data[i];
+								
+								str += "<tr style="+'border-bottom: solid 1px;'+">";  
+								str += "<td>" + row['firstname'] + "</td>";  
+								str += "<td>" + row['age'] + "</td>";  
+								str += "<td>" + row['gender'] + "</td>";  
+								str += "<td><img src=" +row['Image_src'] + " /> </td>"; 
+								str += "<td>" + row['Medications'] + "</td>"; 
+								str += "<td>" + row['extra_notes'] + "</td>"; 						
+								str += "</tr>";  
+								document.getElementById("patientDetails").innerHTML += str;  
+								str = '';  
+							}  
+							
+							
+                            /*for (var i = 0; i < dataLen; ++i) {
+                              var row = data[i];
+                            }*/
+                            //data[2].userID
+                        }
+                    });
+	  //request.send(JSON.stringify(vitals));
+	  //window.location.href="http://localhost:8080/reports.html";
+  }
+  function tabCallReport(attr){
+  if(attr == "vital")
+  window.location.href="http://localhost:8080/vitals.html";
+  else if(attr == "reports")
+  window.location.href="http://localhost:8080/reports.html";
+  else
+  window.location.href="http://localhost:8080/Demographics.html";
+  }
+  </script>
+<style>swfobject-master\swfobject-maste
+/** Start: to style navigation tab **/
+			
+			.vl {
+				    border-right: 6px solid green;
+						margin-right: 610px;
+					}
+			.box-content {
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+}
+.page-header {
+  display: flex;
+  background-color: #232b61;
+    color: white;
+	    padding: 7px;
+}
+.darkBlue{background-color: #232b61;}
+.lightBlue{background-color: #6aa8d5;}
+
+#my_camera{
+ width: 320px;
+ height: 240px;
+ border: 1px solid black;
+ }
+.right {
+    border-right: 1px solid #ccc;
+}
+#patientDetails tr{padding:10px;}
+</style>
+</head>
+
+
+<body onload="loadReports()">
+<div class="loader" id="loaderId"></div>
+<div id="ques3" style="text-align: left;width: 100%;margin:auto;">
+<div class="container">
+	<div class="page-header" id="headerDiv">
+  <h3 style="margin: 0px;margin-left: 10px;margin-top: 8px;">Health Camp SPA</h3>
+  
+ <ul class="nav nav-tabs" style="border-bottom: transparent;margin-left: 548px;">
+   <li><a class="nav-link" style="color:white;" onclick="tabCallReport('demo');" data-toggle="tab">Demographics</a></li>
+   <li><a class="nav-link" style="color:white;" onclick="tabCallReport('vital');" data-toggle="tab">Health Vitals</a></li>
+   <li><a class="nav-link" style="background-color: #749adf;color:white;" onclick="tabCallReport('reports');" data-toggle="tab">Reports</a></li>
+</ul></div>
+
+
+<div class="tab-content">
+   
+   <div class="tab-pane" id="reportDiv" style="display:block;">
+  
+		<div>
+			<table id="patientDetails" class="display" style="width:100%; border:solid 1px;">
+				<thead>
+				
+					<tr style="border-bottom: solid 1px;">
+						<td style="padding: 10px;">Name</td>
+						<td style="padding: 10px;">Age</td>
+						<td style="padding: 10px;">Gender</td>
+						<td style="padding: 10px;">Photo</td>
+						<td style="padding: 10px;">Medications</td>
+						<td style="padding: 10px;">Notes</td>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	  
+	  </div>
+</div>
+
+</div>
+		
+		
+	</div>
+	
+	
+</body>
+
+</html>

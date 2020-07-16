@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+  <script type="text/javascript">
+  function saveVitals(){
+  var vitals = Object();
+                vitals.height = document.getElementById("height").value;
+                vitals.weight = document.getElementById("weight").value;
+                vitals.bp = document.getElementById("bp").value;
+                vitals.pulse = document.getElementById("pulse").value;
+                vitals.body_temp = document.getElementById("body_temp").value;
+				vitals.extra_notes = document.getElementById("extra_notes").value;
+				vitals.medi = document.getElementById("medi").value;
+               
+                //var demo_form = document.getElementById("demo-form");
+	
+  var request = new XMLHttpRequest();
+  //request.open('POST', 'http://localhost:8080/reports', true);
+  //request.send(data);
+  
+  
+  request.open("POST", "http://localhost:8080/reportsVitals", true);  // replace "/demo" with your service (ex. "http://localhost:8000/store")
+  request.setRequestHeader("Content-Type", "application/json");
+  request.send(JSON.stringify(vitals));
+  window.location.href="http://localhost:8080/reports.html";
+  
+  }
+  function tabCallVital(attr){
+  if(attr == "vital")
+  window.location.href="http://localhost:8080/vitals.html";
+  else if(attr == "reports")
+  window.location.href="http://localhost:8080/reports.html";
+  else
+  window.location.href="http://localhost:8080/Demographics.html";
+  }
+  </script>
+<style>swfobject-master\swfobject-maste
+/** Start: to style navigation tab **/
+			
+			.vl {
+				    border-right: 6px solid green;
+						margin-right: 610px;
+					}
+			.box-content {
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+}
+.page-header {
+  display: flex;
+  background-color: #232b61;
+    color: white;
+	
+	    padding: 7px;
+}
+.darkBlue{background-color: #232b61;}
+.lightBlue{background-color: #6aa8d5;}
+
+#my_camera{
+ width: 320px;
+ height: 240px;
+ border: 1px solid black;
+ }
+.right {
+    border-right: 1px solid #ccc;
+}
+#patientDetails tr{padding:10px;}
+</style>
+</head>
+
+
+<body>
+<div class="loader" id="loaderId"></div>
+<div id="ques3" style="text-align: left;width: 100%;margin:auto;">
+<div class="container">
+	<div class="page-header" id="headerDiv">
+  <h3 style="margin: 0px;margin-left: 10px;margin-top: 8px;">Health Camp SPA</h3>
+  
+ <ul class="nav nav-tabs" style="border-bottom: transparent;margin-left: 548px;">
+   <li><a class="nav-link" style="color:white;" onclick="tabCallVital('demo');" data-toggle="tab">Demographics</a></li>
+   <li><a class="nav-link" style="background-color: #749adf;color:white;" onclick="tabCallVital('vital');" data-toggle="tab">Health Vitals</a></li>
+   <li><a class="nav-link" style="color:white;" onclick="tabCallVital('reports');" data-toggle="tab">Reports</a></li>
+</ul></div>
+
+
+<div class="tab-content"> 
+   
+   <div class="tab-pane" style="display:block;">
+	<div class="container-fluid" style="float:left;width:70%;">
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Height:</div>
+			
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input name="height" class="form-control" type="number" id="height"></div>
+			
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Weight:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input name="weight" class="form-control" type="number" id="weight"></div>
+			
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Body Temperature:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input name="body_temp" id="body_temp" class="form-control" type="number" id="body_Temprature"></div>
+			
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">BP:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input name="bp" id="bp"class="form-control" type="number" id="bp"></div>
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Pulse Rate:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input name="pulse" id="pulse" class="form-control" type="number" id="pulse_rate"></div>
+			
+		  </div>
+		  <div class="row">
+		  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+		  <button onclick="saveVitals();" class="btn btn-success" style="cursor: pointer;width:179px;">Save</button>
+		  </div>
+		</div>
+		<div class="container-fluid"style="float:right;width:30%;">
+		<div class="row">
+			<div class="col-sm-3" style="">Medications:</div>
+		  </div>
+		  <div class="row">
+		  <div class="col-sm-3"><textarea rows="4" cols="50" name="medi" id="medi" class="form-control"style=" width: 300px;"></textarea></div>
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="">Notes:</div>
+		  </div>
+		  <div class="row">
+		  <div class="col-sm-3"><textarea rows="4" cols="50" name="extra_notes" class="form-control" id="extra_notes" style="width: 300px;"></textarea></div>
+		  </div>
+		</div>
+   </div>
+
+   
+   
+</div>
+
+
+
+</div>	
+		
+	</div>
+	
+	
+</body>
+
+</html>

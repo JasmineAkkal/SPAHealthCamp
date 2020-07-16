@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+  <script type="text/javascript">
+  function startVideo() {
+    var webcamStream;
+// Grab elements, create settings, etc.
+        var video = document.getElementById('video');
+
+// Get access to the camera!
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Not adding `{ audio: true }` since we only want video now
+            navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
+                video.src = window.URL.createObjectURL(stream);
+				webcamStream = stream;
+                video.play();
+            });
+        }
+
+
+
+        // Elements for taking the snapshot
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+		
+        var video = document.getElementById('video');
+// Trigger photo take
+        document.getElementById("snap").addEventListener("click", function () {
+            context.drawImage(video, 0, 0, 320, 200);
+			//video.src = "";
+			video.pause();
+			webcamStream.getTracks()[0].stop();
+        });
+		
+    
+}
+function saveDemo(){
+var demographics = Object();
+                demographics.firstname = document.getElementById("firstname").value;
+                demographics.lastname = document.getElementById("lastname").value;
+                demographics.gender = document.getElementById("gender").value;
+                demographics.age = document.getElementById("age").value;
+                demographics.notes = document.getElementById("notes").value;
+                demographics.img = document.getElementById("canvas").toDataURL("image/jpeg");
+                //var demo_form = document.getElementById("demo-form");
+	
+  var request = new XMLHttpRequest();
+  //request.open('POST', 'http://localhost:8080/reports', true);
+  //request.send(data);
+  
+  
+  request.open("POST", "http://localhost:8080/reports", true);  // replace "/demo" with your service (ex. "http://localhost:8000/store")
+  request.setRequestHeader("Content-Type", "application/json");
+  request.send(JSON.stringify(demographics));
+  window.location.href="http://localhost:8080/vitals.html";
+}
+  function tabCall(attr){
+  if(attr == "vital")
+  window.location.href="http://localhost:8080/vitals.html";
+  else if(attr == "reports")
+  window.location.href="http://localhost:8080/reports.html";
+  else
+  window.location.href="http://localhost:8080/Demographics.html";
+  }
+  </script>
+<style>swfobject-master\swfobject-maste
+/** Start: to style navigation tab **/
+			
+			.vl {
+				    border-right: 6px solid green;
+						margin-right: 610px;
+					}
+			.box-content {
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+}
+.page-header {
+  display: flex;
+  background-color: #232b61;
+    color: white;
+	    padding: 7px;
+}
+.darkBlue{background-color: #232b61;}
+.lightBlue{background-color: #6aa8d5;}
+
+#my_camera{
+ width: 320px;
+ height: 240px;
+ border: 1px solid black;
+ }
+.right {
+    border-right: 1px solid #ccc;
+}
+#patientDetails tr{padding:10px;}
+</style>
+</head>
+
+
+<body>
+<div class="loader" id="loaderId"></div>
+<div id="ques3" style="text-align: left;width: 100%;margin:auto;">
+<div class="container">
+	<div class="page-header" id="headerDiv">
+  <h3 style="margin: 0px;margin-left: 10px;margin-top: 8px;">Health Camp SPA</h3>
+  
+  <ul class="nav nav-tabs" style="border-bottom: transparent;margin-left: 548px;">
+   <li><a class="nav-link" style="background-color: #749adf;color:white;" onclick="tabCall('demo');" data-toggle="tab">Demographics</a></li>
+   <li><a class="nav-link" style="color:white;" onclick="tabCall('vital');" data-toggle="tab">Health Vitals</a></li>
+   <li><a class="nav-link" style="color:white;" onclick="tabCall('reports');" data-toggle="tab">Reports</a></li>
+</ul>
+</div>
+<!--<div id="tabDiv" class="" style="padding: 14.5px;float:right;width:40%;">
+<a href="#" rel="view1" class="tab1" id="demoTab" style="padding-right: 10px;color: white;padding: 14.5px;">Demographics</a>
+<a href="#" rel="view1" class="tab2" id="vitalTab" style="padding-right: 10px;color: white;padding: 14.5px;">Health Vitals</a>
+<a href="#" rel="view1" class="tab3" id="reportTab" style="padding-right: 10px;color: white;padding: 14.5px;">Reports</a>
+</div>-->
+
+<div class="tab-content">
+
+	<div class="container-fluid" style="float:left;width:70%;">
+		  
+		  
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">First Name:</div>
+			
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input  name="fname" id="firstname" class="form-control" id="firstname"></div>
+			
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Last Name:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input  name="lname" id="lastname" class="form-control"></div>
+			
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Gender:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;">
+				<select name="gender" class="form-control" id="gender"> 
+				  <option>Male</option>
+				  <option>Female</option>
+				  <option>Others</option>  
+				</select>
+			</div>
+			<div class="col-sm-3" style=""></div>
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Age:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><input  name="age" id="age" class="form-control" type="number" id="age"></div>
+			
+		  </div>
+		  <div class="row">
+			<div class="col-sm-3" style="padding: 10px;">Notes or Other details:</div>
+			<div class="col-sm-3" style="border-right: 2px solid #6b73d9;display: inline-block;padding: 10px;"><textarea name="notes" id="notes" class="form-control" id="notes_of_other_details"></textarea></div>
+			
+		  </div>
+		  &nbsp
+		  <div class="row">
+		  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+		  <button type="submit" class="btn btn-success" onclick="saveDemo();" style="cursor: pointer;width:179px;" >Save</button>
+		  </div>
+		  
+		</div>
+   
+	<div class="container-fluid"style="float:right;width:30%;">
+		<div class="row">
+		<div class="col-sm-3" style="">Photo:</div>
+		</div>
+		<div class="row">
+		
+		<video class="col-sm-3 col-md-offset-2" style="width: 320px;height:200px;border: 1px solid gray;margin: 0;background-color: #6ac0e9;margin-bottom: 20px;" id="video" width="640" height="480" autoplay></video>
+      
+        <canvas id="canvas" width="320" height="200" style="display:none;"></canvas>
+		<button id="capture" onclick="startVideo();" class="btn btn-success" style="cursor: pointer;width:119px;">Capture</button>
+		<button id="snap" class="btn btn-success" style="cursor: pointer;width:119px;">Snap Photo</button>
+		<!--<div>
+		  <label  className="btn btn-outline-primary b">ADD PHOTO
+		  <input type="file" name="selectedFile" onChange={this.onChange} ></input>
+		  </label>
+		  </div>
+		</div>-->
+		<div class="row">
+		
+		  </div>
+		  
+			
+		 
+		<div id="results" ></div>
+ 	</div>
+   
+   </div>
+  
+		
+		</div>
+	</div>
+	
+	
+</body>
+
+</html>
