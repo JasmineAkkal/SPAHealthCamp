@@ -1,0 +1,1 @@
+This project takes general information about the user and clicks the real time picture of the user I.e.. access the laptop web cam and clicks it to same the details and the picture of the user in the database and at the end displays the total number of user including their basic details in the rows which is pulled from the database.
